@@ -1,0 +1,43 @@
+<div mat-dialog-title>
+    <h1>Criar Novo Documento:</h1>
+</div>
+<form [formGroup]="createDocForm" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Nome do Documento:</mat-label>
+                <input matInput type="text" placeholder="Ex. Document1" formControlName="name">
+                <mat-error *ngIf="nameControl?.hasError('required')">Nome é obrigatório!</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+                <mat-label>Data Limite para Assinar:</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="date_limit_to_sign">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="dateLimitControl?.hasError('required')">Data Limite é Obrigatória!</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Criado pelo Usuário</mat-label>
+                <mat-select formControlName="created_by_user">
+                    <mat-option *ngFor="let user of users" [value]="user.id">{{user.email}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="createDocForm.get('created_by_user')?.hasError('required')">Usuário Obrigatório!</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Companhia</mat-label>
+                <mat-select formControlName="company">
+                    <mat-option *ngFor="let company of companies" [value]="company.id">{{company.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="createDocForm.get('company')?.hasError('required')">Companhia é Obrigatória!</mat-error>
+            </mat-form-field>
+        </div>
+        
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" (click)="onCancelClick()">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit">Criar Documento</button>
+    </div>
+</form>
